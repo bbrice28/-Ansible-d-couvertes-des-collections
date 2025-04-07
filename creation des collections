@@ -1,2 +1,8 @@
 ansible-galaxy collection init mon_namespace.web_server
 cd mon_namespace/web_server
+
+
+## creation des roles:
+
+ansible-galaxy init roles/nginx
+ansible-galaxy init roles/static_site
