@@ -1,0 +1,66 @@
+# Nginx
+Dans l'arborescence suivante: **roles/nginx/tasks/main.yml**
+
+---
+- name: Installer Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: Copier la config du site par défaut
+  template:
+    src: default.j2
+    dest: /etc/nginx/sites-available/default
+  notify: Restart nginx
+
+- name: S'assurer que nginx est actif et lancé
+  service:
+    name: nginx
+    state: started
+    enabled: true
+
+
+
+Dans l'arborescence suivante **roles/nginx/templates/default.j2**
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+Dans l'arborescence suivante **roles/nginx/handlers/main.yml**
+
+---
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+# Static site
+
+Dans l'arborescence suivante **roles/static_site/tasks/main.yml**
+
+---
+- name: Créer le dossier du site
+  file:
+    path: /var/www/html
+    state: directory
+    mode: '0755'
+
+- name: Copier les fichiers statiques
+  copy:
+    src: site/
+    dest: /var/www/html/                         
+
+puis mettre l'index dans  l'arborescence suivante **roles/static_site/files/site/index.html**
+
