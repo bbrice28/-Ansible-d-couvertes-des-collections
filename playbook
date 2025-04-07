@@ -1,0 +1,7 @@
+---
+- name: Déployer un site statique avec Nginx
+  hosts: all
+  become: true
+  roles:
+    - mon_namespace.web_server.nginx
+    - mon_namespace.web_server.static_site
