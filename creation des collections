@@ -1,0 +1,2 @@
+ansible-galaxy collection init mon_namespace.web_server
+cd mon_namespace/web_server
